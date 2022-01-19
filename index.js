@@ -39,15 +39,36 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+Person.prototype.eat = function(edible){
+  if(this.stomach.length < 10){
+    this.stomach.push(edible);
+  }
 }
 
+Person.prototype.poop = function(){
+  this.stomach = [];
+}
+
+Person.prototype.toString = function(){
+  return `${this.name}, ${this.age}`;
+}
+
+const sallie = new Person('Sallie', 26)
+const mark = new Person('Mark', 23)
+const cori = new Person('Cori', 25)
 
 
-
-
-
+mark.eat('pizza')
+mark.eat('pasta')
+mark.eat('taco')
+mark.eat('sushi')
+mark.eat('sandwich')
+mark.eat('ramen')
 
 /*
   TASK 2
@@ -63,10 +84,20 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, milesPerGallon)  {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
 
+Car.prototype.fill = function(gallons){
+  this.tank += gallons;
+}
+Car.prototype.drive = function(distance){
+  this.odometer += distance;
+  this.tank -= (distance/this.milesPerGallon)
+}
 
 /*
   TASK 3
@@ -75,19 +106,27 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
 }
-
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function(){
+  return `Playing with ${this.favoriteToy}`;
+};
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
-*/
+  1. In the global scope, this returns the window object. This is generally a bug and rarely useful.
+  2. Implicit binding-Whenever a function is called by a proceeding dot, the object left of the dot gets 'this'. When a constructor function
+  is used, this referes to the specific instance of the object that is created. Implicit binding applies to objects in methods. When the 
+  object is invoked, 'this' refers to the thing left of the dot.
+  3. Binding to a constant essentially pushes implicit binding one step further up and binds the 'this' to the constant that the object
+  is assigned to.
+  4. New Binding allows you to make new objects with the same keys. It is initialized using arguments. If several objects are all going
+  to use the same keys, you can refer to those keys with .this and create many objects by assigning values to those parameters.
+  */
 
 
 ///////// END OF CHALLENGE /////////
